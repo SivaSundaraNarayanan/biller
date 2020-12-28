@@ -54,8 +54,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
                       Navigator.of(context)
                           .pushNamed(
                         CustomerDetailsPage.routeName,
-                        arguments:
-                            CustomerDetailArgument(customerId: customer.id),
+                        arguments: DetailPageArgument(id: customer.id),
                       )
                           .then((value) {
                         if (value != null) {

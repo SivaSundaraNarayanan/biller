@@ -2,7 +2,9 @@ import 'package:biller/database/model/mock_model.dart';
 import 'package:biller/database/services/item_service.dart';
 import 'package:biller/page/add_items_page.dart';
 import 'package:biller/screens/empty_screen.dart';
+import 'package:biller/util/constant_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:biller/util/form_helper.dart';
 
 class ItemsScreen extends StatefulWidget {
   @override
@@ -40,30 +42,7 @@ class _ItemsScreenState extends State<ItemsScreen> {
             List<Item> items = snapshot.data;
             return Column(
               children: [
-                Container(
-                  padding: EdgeInsets.all(8),
-                  child: TextFormField(
-                    textInputAction: TextInputAction.search,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: Colors.grey[600],
-                      ),
-                      hintText: 'Search',
-                      filled: true,
-                      fillColor: Colors.grey[300],
-                      contentPadding: EdgeInsets.zero,
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.transparent),
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                    ),
-                  ),
-                ),
+                SearchField(),
                 Expanded(
                   child: ListView.builder(
                     itemBuilder: (BuildContext context, int index) {
@@ -124,7 +103,8 @@ class _ItemsScreenState extends State<ItemsScreen> {
                             ),
                             child: RichText(
                               text: TextSpan(
-                                text: '₹ ${item.costPrice.ceil()}',
+                                text:
+                                    '${ConstantHelper.rupeeSymbol} ${item.costPrice.ceil()}',
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey[700],

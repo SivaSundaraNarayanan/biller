@@ -1,5 +1,6 @@
 import 'package:biller/database/model/mock_model.dart';
 import 'package:biller/database/services/item_service.dart';
+import 'package:biller/util/constant_helper.dart';
 import 'package:biller/util/form_helper.dart';
 import 'package:flutter/material.dart';
 
@@ -119,7 +120,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                     hint: 'Cost Price',
                     keyboardType: TextInputType.number,
                     decoration: FormHelper.getInputDecoration(
-                      prefix: Text('₹ '),
+                      prefix: Text('${ConstantHelper.rupeeSymbol} '),
                       context: context,
                     ),
                   ),
@@ -129,7 +130,7 @@ class _AddItemsPageState extends State<AddItemsPage> {
                     hint: 'Charges',
                     keyboardType: TextInputType.number,
                     decoration: FormHelper.getInputDecoration(
-                      prefix: Text('₹ '),
+                      prefix: Text('${ConstantHelper.rupeeSymbol} '),
                       context: context,
                     ),
                   ),

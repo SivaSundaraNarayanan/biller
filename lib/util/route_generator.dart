@@ -5,6 +5,7 @@ import 'package:biller/page/add_purchase_order_page.dart';
 import 'package:biller/page/add_sale_order_page.dart';
 import 'package:biller/page/customer_details_page.dart';
 import 'package:biller/page/home_page.dart';
+import 'package:biller/page/sale_order_details_page.dart';
 import 'package:flutter/material.dart';
 
 enum LineItemArgumentsType {
@@ -20,10 +21,12 @@ class LineItemArguments {
   });
 }
 
-class CustomerDetailArgument {
-  final int customerId;
+class DetailPageArgument {
+  final int id;
 
-  CustomerDetailArgument({@required this.customerId});
+  DetailPageArgument({
+    @required this.id,
+  });
 }
 
 class RouteGenerator {
@@ -50,10 +53,16 @@ class RouteGenerator {
           type: args.type,
         ));
 
+      case SaleOrderDetailsPage.routeName:
+        DetailPageArgument args = settings.arguments;
+        return _transit(SaleOrderDetailsPage(
+          id: args.id,
+        ));
+
       case CustomerDetailsPage.routeName:
-        CustomerDetailArgument args = settings.arguments;
+        DetailPageArgument args = settings.arguments;
         return _transit(CustomerDetailsPage(
-          id: args.customerId,
+          id: args.id,
         ));
       default:
         return _errorRoute();
@@ -62,8 +71,7 @@ class RouteGenerator {
 
   static PageRouteBuilder<dynamic> _transit(Widget returnPage) {
     return PageRouteBuilder(
-      transitionDuration: Duration(milliseconds: 150),
-      reverseTransitionDuration: Duration(seconds: 0),
+      reverseTransitionDuration: Duration(milliseconds: 150),
       pageBuilder: (BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation) {
         return returnPage;
@@ -71,9 +79,7 @@ class RouteGenerator {
       transitionsBuilder: (BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation, Widget child) {
         return ScaleTransition(
-          scale: Tween<double>(begin: 0.75, end: 1.0).animate(
-            CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic),
-          ),
+          scale: Tween(begin: 0.95, end: 1.0).animate(animation),
           child: child,
         );
       },

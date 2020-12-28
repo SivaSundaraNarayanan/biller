@@ -12,8 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Biller',
       theme: ThemeData(
-        primaryColor: Colors.blue,
-        accentColor: Colors.blue[700],
+        primarySwatch: Colors.indigo,
         // fontFamily: 'AlegreyaSans'
       ),
       onGenerateRoute: RouteGenerator.generateRoute,

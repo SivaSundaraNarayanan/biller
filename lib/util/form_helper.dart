@@ -259,3 +259,33 @@ class FormHelper {
     );
   }
 }
+
+class SearchField extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: TextFormField(
+        textInputAction: TextInputAction.search,
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.search,
+            color: Colors.grey[600],
+          ),
+          hintText: 'Search',
+          filled: true,
+          fillColor: Colors.grey[300],
+          contentPadding: EdgeInsets.zero,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
+            borderRadius: BorderRadius.circular(25),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.transparent),
+            borderRadius: BorderRadius.circular(25),
+          ),
+        ),
+      ),
+    );
+  }
+}

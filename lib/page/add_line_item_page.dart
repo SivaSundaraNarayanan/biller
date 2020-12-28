@@ -1,5 +1,6 @@
 import 'package:biller/database/model/mock_model.dart';
 import 'package:biller/database/services/item_service.dart';
+import 'package:biller/util/constant_helper.dart';
 import 'package:biller/util/form_helper.dart';
 import 'package:biller/util/route_generator.dart';
 import 'package:flutter/material.dart';
@@ -143,7 +144,8 @@ class _AddLineItemPageState extends State<AddLineItemPage> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: '₹ ${item.costPrice}',
+                                  text:
+                                      '${ConstantHelper.rupeeSymbol} ${item.costPrice}',
                                   style: TextStyle(
                                     color: Colors.black,
                                   ),
@@ -184,6 +186,13 @@ class _AddLineItemPageState extends State<AddLineItemPage> {
                             validator: (String value) {
                               if (value.isEmpty) {
                                 return 'Quantity required';
+                              }
+                              if ((this.widget.type ==
+                                      LineItemArgumentsType.saleOrder) &&
+                                  (int.parse(value) >
+                                      (_item.stock.count -
+                                          _item.stock.committed))) {
+                                return 'Quantity out of stock';
                               }
                               return null;
                             },

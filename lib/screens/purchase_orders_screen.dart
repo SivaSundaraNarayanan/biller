@@ -74,7 +74,7 @@ class _PurchaseOrderScreenState extends State<PurchaseOrderScreen> {
                         ),
                       ),
                       child: Text(
-                        '₹ $price',
+                        '${ConstantHelper.rupeeSymbol}$price',
                         style: TextStyle(
                           color: Colors.grey,
                           fontWeight: FontWeight.w500,

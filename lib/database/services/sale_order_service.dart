@@ -3,6 +3,21 @@ import 'package:biller/database/model/mock_model.dart';
 import 'package:biller/util/db_helper.dart';
 
 class SaleOrderService {
+  final String _saleOrderTable = SaleOrderModel.table;
+  final String _saleOrderItemTable = SaleOrderModel.table;
+
+  final String _baseSelectQuery = 'SELECT' +
+      ' orders.id as order_id, order_items.id as order_item_id, items.id as item_id, stocks.id as stock_id, customers.id as customer_id,*' +
+      ' from ${SaleOrderModel.table} orders ';
+
+  final String _joinQuery =
+      'INNER JOIN ${SaleOrderItemModel.table} order_items ON order_items.orderId = orders.id ' +
+          'INNER JOIN ${ItemModel.table} items ON items.id = order_items.itemId ' +
+          'INNER JOIN ${StockModel.table} stocks ON stocks.itemId = items.id ' +
+          'INNER JOIN ${CustomerModel.table} customers ON orders.customerId = customers.id ';
+
+  final String _orderQuery = 'ORDER BY orders.id ';
+
   Future<SaleOrder> addSaleOrder(SaleOrder order) async {
     await DB.init();
 
@@ -68,14 +83,29 @@ class SaleOrderService {
   Future<List<SaleOrder>> getSaleOrderWithItems() async {
     await DB.init();
 
-    List<Map<String, dynamic>> items = await DB.rawQuery('''SELECT 
-        orders.id as order_id, order_items.id as order_item_id, items.id as item_id, stocks.id as stock_id, *
-        from ${SaleOrderModel.table} orders 
-        INNER JOIN ${SaleOrderItemModel.table} order_items ON order_items.orderId = orders.id 
-        INNER JOIN ${ItemModel.table} items ON items.id = order_items.itemId
-        INNER JOIN ${StockModel.table} stocks ON stocks.itemId = items.id
-        ORDER BY orders.id''');
+    List<Map<String, dynamic>> items =
+        await DB.rawQuery(_baseSelectQuery + _joinQuery + _orderQuery);
 
+    List<SaleOrder> saleOrders = formatSaleOrder(items);
+
+    return saleOrders;
+  }
+
+  Future<SaleOrder> getSaleOrderById(int id) async {
+    await DB.init();
+
+    String whereClause = ' WHERE order_id = $id ';
+
+    var query = _baseSelectQuery + _joinQuery + whereClause + _orderQuery;
+
+    List<Map<String, dynamic>> items = await DB.rawQuery(query);
+
+    List<SaleOrder> orders = formatSaleOrder(items);
+
+    return orders[0];
+  }
+
+  List<SaleOrder> formatSaleOrder(List<Map<String, dynamic>> items) {
     List<SaleOrder> saleOrders = [];
     SaleOrder order;
 
@@ -86,6 +116,8 @@ class SaleOrderService {
         if (itr != 0) saleOrders.add(order);
 
         order = SaleOrderModel.fromMap(item).toSaleOrder();
+        Customer _customer = CustomerModel.fromMap(item).toCustomer();
+        order.customer = _customer;
       }
 
       SaleOrderItem _orderItem =

@@ -3,6 +3,7 @@ import 'package:biller/database/services/customer_service.dart';
 import 'package:biller/database/services/sale_order_service.dart';
 import 'package:biller/page/add_customer_page.dart';
 import 'package:biller/page/add_line_item_page.dart';
+import 'package:biller/util/constant_helper.dart';
 import 'package:biller/util/form_helper.dart';
 import 'package:biller/util/route_generator.dart';
 import 'package:flutter/material.dart';
@@ -235,7 +236,7 @@ class _AddSaleOrderPageState extends State<AddSaleOrderPage> {
                                           height: 8,
                                         ),
                                         Text(
-                                          '${e.quantity} * ₹${e.price}',
+                                          '${e.quantity} * ${ConstantHelper.rupeeSymbol}${e.price}',
                                           style: TextStyle(
                                             color: Colors.grey[500],
                                           ),
@@ -247,7 +248,7 @@ class _AddSaleOrderPageState extends State<AddSaleOrderPage> {
                                     alignment: Alignment.bottomRight,
                                     padding: EdgeInsets.all(16),
                                     child: Text(
-                                      '₹${e.price * e.quantity}',
+                                      '${ConstantHelper.rupeeSymbol}${e.price * e.quantity}',
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),

@@ -1,6 +1,7 @@
 import 'package:biller/database/model/mock_model.dart';
 import 'package:biller/database/services/purchase_order_service.dart';
 import 'package:biller/page/add_line_item_page.dart';
+import 'package:biller/util/constant_helper.dart';
 import 'package:biller/util/form_helper.dart';
 import 'package:biller/util/route_generator.dart';
 import 'package:flutter/material.dart';
@@ -167,7 +168,7 @@ class _AddPurchaseOrderPageState extends State<AddPurchaseOrderPage> {
                                           height: 8,
                                         ),
                                         Text(
-                                          '${e.quantity} * ₹${e.price}',
+                                          '${e.quantity} * ${ConstantHelper.rupeeSymbol}${e.price}',
                                           style: TextStyle(
                                             color: Colors.grey[500],
                                           ),
@@ -179,7 +180,7 @@ class _AddPurchaseOrderPageState extends State<AddPurchaseOrderPage> {
                                     alignment: Alignment.bottomRight,
                                     padding: EdgeInsets.all(16),
                                     child: Text(
-                                      '₹${e.price * e.quantity}',
+                                      '${ConstantHelper.rupeeSymbol}${e.price * e.quantity}',
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),
