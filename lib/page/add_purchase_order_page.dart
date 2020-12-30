@@ -82,6 +82,9 @@ class _AddPurchaseOrderPageState extends State<AddPurchaseOrderPage> {
                   decoration: FormHelper.getInputDecoration(
                     context: context,
                   ),
+                  validator: (String value) {
+                    return null;
+                  },
                 ),
                 FormHelper.getDatePicker(
                   context: context,

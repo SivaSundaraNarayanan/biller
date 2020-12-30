@@ -140,6 +140,7 @@ class _SaleOrderScreenState extends State<SaleOrderScreen> {
             if (value != null) {
               Scaffold.of(context).showSnackBar(
                 SnackBar(
+                  duration: Duration(seconds: 1),
                   content: Text('Sale Order created successfully'),
                 ),
               );

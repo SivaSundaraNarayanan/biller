@@ -78,6 +78,12 @@ class _AddSaleOrderPageState extends State<AddSaleOrderPage> {
     });
   }
 
+  void _removeItem(SaleOrderItem item) {
+    setState(() {
+      _orderItems.remove(item);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,38 +196,58 @@ class _AddSaleOrderPageState extends State<AddSaleOrderPage> {
                             ...['Items', 'Amount']
                                 .map(
                                   (e) => Container(
-                                    alignment: e == 'Amount'
-                                        ? Alignment.bottomRight
-                                        : Alignment.bottomLeft,
                                     padding: EdgeInsets.symmetric(
                                         vertical: 10, horizontal: 16),
-                                    child: Text(
-                                      e,
-                                      style: TextStyle(
-                                        color: Colors.grey[600],
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                      ),
+                                    child: Row(
+                                      mainAxisAlignment: e == 'Amount'
+                                          ? MainAxisAlignment.end
+                                          : MainAxisAlignment.start,
+                                      children: [
+                                        Opacity(
+                                          opacity: 0,
+                                          child: GestureDetector(
+                                            child: Icon(Icons.cancel),
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Text(
+                                          e,
+                                          style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 )
                                 .toList()
                           ],
                         ),
-                        ..._orderItems
-                            .map(
-                              (e) => TableRow(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: Colors.grey[300],
-                                    ),
-                                  ),
+                        ..._orderItems.map((e) {
+                          return TableRow(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.grey[300],
                                 ),
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(16),
-                                    child: Column(
+                              ),
+                            ),
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(16),
+                                child: Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () => _removeItem(e),
+                                      child: Icon(
+                                        Icons.cancel,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
@@ -243,21 +269,22 @@ class _AddSaleOrderPageState extends State<AddSaleOrderPage> {
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.bottomRight,
-                                    padding: EdgeInsets.all(16),
-                                    child: Text(
-                                      '${ConstantHelper.rupeeSymbol}${e.price * e.quantity}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            )
-                            .toList(),
+                              Container(
+                                alignment: Alignment.bottomRight,
+                                padding: EdgeInsets.all(16),
+                                child: Text(
+                                  '${ConstantHelper.rupeeSymbol}${e.price * e.quantity}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }).toList(),
                       ])
                     : Container(),
                 Container(

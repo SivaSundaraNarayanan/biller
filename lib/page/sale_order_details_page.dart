@@ -33,7 +33,11 @@ class _SaleOrderDetailsPageState extends State<SaleOrderDetailsPage> {
 
   void _handleEdit() {}
 
-  void _handleDelete() {}
+  void _handleDelete() {
+    _saleOrderService
+        .deleteSaleOrder(_saleOrder.id)
+        .then((value) => Navigator.of(context).pop());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +54,15 @@ class _SaleOrderDetailsPageState extends State<SaleOrderDetailsPage> {
               onPressed: _handleEdit,
             ),
           ),
-          Tooltip(
-            message: 'Print',
-            child: IconButton(
-              icon: Icon(Icons.print),
-              onPressed: _handleDelete,
-            ),
-          ),
+          // Tooltip(
+          //   message: 'Print',
+          //   child: IconButton(
+          //     icon: Icon(Icons.print),
+          //     onPressed: () {},
+          //   ),
+          // ),
           PopupMenuButton(
-            itemBuilder: (BuildContext context) => ['Delete']
+            itemBuilder: (BuildContext context) => ['Generate Reciept']
                 .map(
                   (e) => PopupMenuItem(
                     child: Text(e),
@@ -67,7 +71,9 @@ class _SaleOrderDetailsPageState extends State<SaleOrderDetailsPage> {
                 )
                 .toList(),
             onSelected: (item) {
-              print(item);
+              if (item == 'Delete') {
+                _handleDelete();
+              }
             },
           ),
         ],

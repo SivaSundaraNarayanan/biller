@@ -6,6 +6,8 @@ class SaleOrderService {
   final String _saleOrderTable = SaleOrderModel.table;
   final String _saleOrderItemTable = SaleOrderModel.table;
 
+  final String _baseDeleteQuery = '''DELETE FROM ${SaleOrderModel.table} ''';
+
   final String _baseSelectQuery = 'SELECT' +
       ' orders.id as order_id, order_items.id as order_item_id, items.id as item_id, stocks.id as stock_id, customers.id as customer_id,*' +
       ' from ${SaleOrderModel.table} orders ';
@@ -105,7 +107,17 @@ class SaleOrderService {
     return orders[0];
   }
 
-  List<SaleOrder> formatSaleOrder(List<Map<String, dynamic>> items) {
+  Future<bool> deleteSaleOrder(int id) async {
+    await DB.init();
+
+    String whereClause = ' WHERE id = $id';
+
+    int count = await DB.rawDelete(_baseDeleteQuery + whereClause);
+
+    return count == 1;
+  }
+
+  static List<SaleOrder> formatSaleOrder(List<Map<String, dynamic>> items) {
     List<SaleOrder> saleOrders = [];
     SaleOrder order;
 
