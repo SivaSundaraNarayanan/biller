@@ -148,4 +148,19 @@ class SaleOrderService {
 
     return saleOrders;
   }
+
+  Future<List<SaleOrder>> getSaleOrderByCustomerId(int id) async {
+    await DB.init();
+
+    String whereClause = 'WHERE customers.id = $id';
+
+    String orderBy = ' ORDER BY date(orders.orderedOn) DESC';
+
+    List<Map<String, dynamic>> items = await DB
+        .rawQuery(_baseSelectQuery + _joinQuery + whereClause + orderBy);
+
+    var orders = formatSaleOrder(items);
+
+    return orders;
+  }
 }

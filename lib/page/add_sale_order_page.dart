@@ -16,7 +16,7 @@ class AddSaleOrderPage extends StatefulWidget {
 }
 
 class _AddSaleOrderPageState extends State<AddSaleOrderPage> {
-  final _formKey = GlobalKey<FormState>();
+  final _key = GlobalKey<ScaffoldState>();
   final Map<String, TextEditingController> _controllers = {
     'orderNo': TextEditingController(),
   };
@@ -52,15 +52,16 @@ class _AddSaleOrderPageState extends State<AddSaleOrderPage> {
       return;
     }
     setState(() {
-      _error = '';
+      _error = null;
     });
 
     if (_orderItems.isEmpty) {
-      Scaffold.of(context).showSnackBar(
+      _key.currentState.showSnackBar(
         SnackBar(
           content: Text('No items added'),
         ),
       );
+      return;
     }
     SaleOrder order = SaleOrder(
       items: _orderItems,
@@ -87,6 +88,7 @@ class _AddSaleOrderPageState extends State<AddSaleOrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text('New Sale Order'),

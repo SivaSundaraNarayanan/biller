@@ -76,4 +76,8 @@ class CustomerService {
 
     return count;
   }
+
+  Future<List<SaleOrder>> getAllOrders(int id) {
+    
+  }
 }
